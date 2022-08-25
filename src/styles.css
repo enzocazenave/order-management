@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;700;800;900&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: 'Montserrat';
+  margin: 0;
+  padding: 0;
+}
+
+.l-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+}
+
+.l-container__form {
+  width: 50%;
+}
+
+.l-container__form-input {
+  border-radius: 5px;
+  border: 2px solid rgb(0,0,0, 0.1);
+  display: block;
+  font-size: 17px;
+  margin-bottom: 10px;
+  outline: none;
+  padding: 7px;
+  text-align: center;
+  width: 100%;
+}
+
+.l-container__form-input:focus {
+  outline: 3px solid rgba(28, 106, 214, 0.5)
+}
+
+.l-container__form-button {
+  background-color: rgba(28, 106, 214, 0.8);
+  border-radius: 5px;
+  border: none;
+  color: #fff;
+  outline: none;
+  padding: 10px;
+  transition: background .3s;
+  width: 100%;
+}
+
+.l-container__form-button:hover {
+  background-color: rgb(28, 106, 214);
+  cursor: pointer;
+}
+
+.l-container__form-button i {
+  margin-right: 10px;
+}
+
+.l-container__form-title {
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.p-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.p-container__pedidos {
+  padding: 25px;
+}
+
+.header-container {
+  margin-bottom: 10px;
+}
+
+.header-container-button {
+  background-color: rgba(28, 106, 214, 0.25);
+  border-radius: 5px;
+  border: none;
+  font-size: 20px;
+  letter-spacing: 2px;
+  margin-right: 10px;
+  outline: none;  
+  padding: 10px;
+  transition: opacity .3s;
+}
+
+.header-container-button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.button-selected {
+  background-color: rgba(28, 106, 214, 0.8);
+  color: #fff;
+  font-weight: 500;
+  max-height: 50vh;
+}
+
+.table-pedidos {
+  border-collapse: collapse;
+  margin-top: 20px;
+  max-height: 50%;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table-pedidos tbody {
+  overflow-y: scroll;
+  overflow: hidden;
+}
+
+.table-pedidos td {
+  font-size: 20px;
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid rgb(0,0,0, 0.1);
+}
+
+.table-pedidos th {
+  background-color: #ddd;
+  font-size: 20px;
+  padding: 8px;
+}
+
+.table-pedidos-action {
+  background-color: rgb(85, 236, 102);
+  border-radius: 5px;
+  border: none;
+  margin: 5px;
+  padding:10px;
+  transition: opacity .3s;
+}
+
+.table-pedidos-action:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
+.button-red {
+  background-color: rgb(236, 85, 85)
+}
+
+.button-blue {
+  background-color: rgba(28, 106, 214, 0.8)
+}
+
+.buttons-container {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.buttons-container button {
+  background-color: rgba(28, 106, 214, 1);
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  margin: 5px;
+  outline: none;
+  padding: 10px;
+  transition: opacity .3s;
+}
+
+.buttons-container button:hover {
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.buttons-container p {
+  margin-top: 10px;
+}
