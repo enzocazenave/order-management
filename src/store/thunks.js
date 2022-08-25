@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import { ref, set, remove } from "firebase/database";
 import { FirebaseDB } from "../firebase/config"
 
@@ -33,5 +34,19 @@ export const deleteOrder = (id) => {
     return async(dispatch, getState) => {
         const reference = ref(FirebaseDB, `orders/${id}`);
         remove(reference);
+    }
+}
+
+export const updatePrice = (price, type) => {
+    return async(dispatch, getState) => {
+        const reference = ref(FirebaseDB, `prices/${type}`);
+        await set(reference, price);
+    }
+}
+
+export const completeOrder = (id) => {
+    return async(dispatch, getState) => {
+        const reference = ref(FirebaseDB, `orders/${id}/completed`);
+        await set(reference, true);
     }
 }

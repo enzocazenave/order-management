@@ -1,19 +1,30 @@
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
-import { createNewOrder, deleteOrder } from '../store/thunks';
+import { completeOrder, createNewOrder, deleteOrder, updatePrice } from '../store/thunks';
 import { getAllOrders } from '../helpers/getAllOrders';
 import { getPrices } from '../helpers/getPrices';
+import { useForm } from '../hooks/useForm';
+import { login } from '../store/appSlice';
+
+const initialForm1 = {
+    package_price: 0
+}
+
+const initialForm2 = {
+    album_price: 0
+}
 
 export const Panel = () => {
 
     const [view, setView] = useState("pedidos");
     const dispatch = useDispatch();
     const { price_package, price_album } = useSelector(state => state.app);
-
     const [pedidos, setPedidos] = useState([]);
     const [pedidosCompletados, setPedidosCompletados] = useState([]);
     const [prices, setPrices] = useState([]);
+    const { package_price, onInputChange } = useForm(initialForm1);
+    const { album_price, onInputChange: onChangeInput } = useForm(initialForm2);
 
     const getOrders = () => {
         getAllOrders().then((orders) => {
@@ -24,7 +35,16 @@ export const Panel = () => {
             }
         
             if (result.length > 0) return setPedidos(result);
+
             setPedidos([]);
+
+        });
+    }
+
+    const getPricesNow = () => {
+        getPrices().then(prices => {
+            setPrices(prices);
+            dispatch(login(prices));
 
         });
     }
@@ -56,8 +76,6 @@ export const Panel = () => {
     }, [view])
     
     const onCompleteOrder = (id) => {
-        console.log(id);
-
         Swal.fire({
             title: '¿Estas seguro?',
             text: "No puedes revertir esto",
@@ -69,6 +87,8 @@ export const Panel = () => {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
+              dispatch(completeOrder(id));
+              getOrders();
               Swal.fire(
                 'Completado!',
                 'El pedido se envió a la lista de pedidos completados',
@@ -149,6 +169,28 @@ export const Panel = () => {
             info,
             'info'
           )
+    }
+
+    const savePrice = (event, type) => {
+        event.preventDefault();
+
+        if (type == 'package') {
+            dispatch(updatePrice(parseInt(package_price), type));
+            Swal.fire(
+                'Actualizado!',
+                'El valor de los paquetes fue actualizado a $ ' + package_price,
+                'success'
+            )
+        } else {
+            dispatch(updatePrice(parseInt(album_price), type));
+            Swal.fire(
+                'Actualizado!',
+                'El valor de los àlbumes fue actualizado a $ ' + album_price,
+                'success'
+            )
+        }
+
+        getPricesNow();
     }
 
     return (
@@ -256,16 +298,18 @@ export const Panel = () => {
                     <div className="p-container__pedidos animate__animated animate__fadeIn">
                         <div className="config-container">
                             <p>Precio de paquete</p>
+                            <p>Precio actual: $ {prices[1]}</p>
                             <form>
-                                $<input className="config-input" type="number" placeholder={ prices[1] } />
-                                <button className="table-pedidos-action button-blue" type="submit"><i className="fas fa-save"></i></button>
+                                $<input value={ package_price } name="package_price" onChange={ onInputChange } className="config-input" type="number" />
+                                <button onClick={ (e) => savePrice(e,'package') } className="table-pedidos-action button-blue" type="submit"><i className="fas fa-save"></i></button>
                             </form>
                         </div>
                         <div className="config-container">
                             <p>Precio de álbum</p>
+                            <p>Precio actual: $ {prices[0]}</p>
                             <form>
-                                $<input className="config-input" type="number" placeholder={ prices[0] } />
-                                <button className="table-pedidos-action button-blue" type="submit"><i className="fas fa-save"></i></button>
+                                $<input value={ album_price } name="album_price" onChange={ onChangeInput } className="config-input" type="number" />
+                                <button onClick={ (e) => savePrice(e,'album') } className="table-pedidos-action button-blue" type="submit"><i className="fas fa-save"></i></button>
                             </form>
                         </div>
                     </div>
