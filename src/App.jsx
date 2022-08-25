@@ -1,14 +1,15 @@
 import { LoginForm } from "./components/LoginForm";
 import { Panel } from "./components/Panel";
+import { useSelector } from "react-redux";
 
 export const App = () => {
 
-    const authenticated = true;
+    const { auth } = useSelector(state => state.app);
 
     return (
         <>
             {
-                (!authenticated)
+                (!auth)
                 ? <LoginForm />
                 : <Panel />
             }
