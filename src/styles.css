@@ -194,3 +194,7 @@ body {
 .config-container p {
   font-size: 20px;
 }
+
+.input-add {
+  width: auto;
+}

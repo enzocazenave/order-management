@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { useDispatch } from 'react-redux';
-import { createNewOrder } from '../store/thunks';
+import { useDispatch, useSelector } from 'react-redux';
+import { createNewOrder, deleteOrder } from '../store/thunks';
 import { getAllOrders } from '../helpers/getAllOrders';
 import { getPrices } from '../helpers/getPrices';
 
@@ -9,10 +9,25 @@ export const Panel = () => {
 
     const [view, setView] = useState("pedidos");
     const dispatch = useDispatch();
-    
+    const { price_package, price_album } = useSelector(state => state.app);
+
     const [pedidos, setPedidos] = useState([]);
     const [pedidosCompletados, setPedidosCompletados] = useState([]);
-    const [prices, setPrices] = useState([])
+    const [prices, setPrices] = useState([]);
+
+    const getOrders = () => {
+        getAllOrders().then((orders) => {
+            const result = [];
+        
+            for (const order of orders) {
+                if (order.completed == false) result.push(order);
+            }
+        
+            if (result.length > 0) return setPedidos(result);
+            setPedidos([]);
+
+        });
+    }
 
     useEffect(() => {
         if (view == 'pedidos') {
@@ -24,7 +39,7 @@ export const Panel = () => {
                 }
             
                 if (result.length > 0) setPedidos(result);
-            })
+            });
         } else if (view == 'completados') {
             getAllOrders().then((orders) => {
                 const result = [];
@@ -64,7 +79,6 @@ export const Panel = () => {
     }
 
     const onDeleteOrder = (id) => {
-        console.log(id);
         Swal.fire({
             title: '¿Estas seguro?',
             text: "No puedes revertir esto",
@@ -76,17 +90,65 @@ export const Panel = () => {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire(
-                'Borrado!',
-                'El pedido se eliminó',
-                'success'
-              )
+                dispatch(deleteOrder(id));
+                Swal.fire(
+                    'Borrado!',
+                    'El pedido se eliminó',
+                    'success'
+                )
+                getOrders();
             }
-        })
+        });
     }
 
-    const onEditOrder = (id) => {
-        console.log(id)
+    const onAddOrder = async() => {
+        const { value: formValues } = await Swal.fire({
+            title: 'Agregar un nuevo pedido',
+            html:
+              '<input placeholder="Nombre del cliente" id="name-input1" type="text" class="swal2-input">' +
+              '<input placeholder="Información del cliente" id="info-input2" type="text" class="swal2-input">' +
+              '<input id="type-input3" type="number" placeholder="1: Paquetes | 2: Album" class="swal2-input input-add">' +
+              '<input placeholder="Cantidad" id="qtty-input4" type="number" class="swal2-input">',
+            focusConfirm: false,
+            confirmButtonText: 'Agregar pedido',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+              return [
+                document.getElementById('name-input1').value,
+                document.getElementById('info-input2').value,
+                document.getElementById('type-input3').value,
+                document.getElementById('qtty-input4').value
+              ]
+            }
+        })
+          
+        if (formValues) {
+            if (formValues[0].length > 0 && formValues[1].length > 0 && formValues[2].length > 0 && formValues[3].length > 0) {
+                dispatch(createNewOrder({
+                    name: formValues[0],
+                    info: formValues[1],
+                    type: (formValues[2] == 2) ? 'album' : 'package',
+                    price: (formValues[2] == 2) ? price_album : price_package,
+                    qtty: formValues[3]
+                }));
+
+                getOrders();
+
+                Swal.fire(
+                    'Agregado!',
+                    'El pedido se agregó a la lista',
+                    'success'
+                )
+            }
+        }
+    }
+
+    const onInfoClick = (info) => {
+        Swal.fire(
+            'Información del cliente',
+            info,
+            'info'
+          )
     }
 
     return (
@@ -101,7 +163,7 @@ export const Panel = () => {
                 <button id={ (view == 'configuracion') ? 'button-selected' : '' } onClick={ () => setView('configuracion') } className="header-container-button">
                     Configuración
                 </button>
-                <button onClick={() => dispatch(createNewOrder())} className="header-container-button">Agregar pedido</button>
+                <button onClick={ onAddOrder } className="header-container-button">Agregar pedido</button>
             </header>
             <hr />
             {
@@ -122,7 +184,7 @@ export const Panel = () => {
                                 {
                                     pedidos.map(pedido => (
                                         <tr key={ pedido.id }>
-                                            <td data-label="Cliente">{pedido.name}<button className="table-pedidos-action button-blue"><i className="fas fa-info"></i></button></td>
+                                            <td data-label="Cliente">{pedido.name}<button onClick={ () => onInfoClick(pedido.client_info) } className="table-pedidos-action button-blue"><i className="fas fa-info"></i></button></td>
                                             <td data-label="Cantidad">{ pedido.qtty }</td>
                                             <td data-label="Total">$ { pedido.total }</td>
                                             <td data-label="Fecha de pedido">{ pedido.date }</td>
@@ -133,12 +195,6 @@ export const Panel = () => {
                                                 </button>
                                                 <button onClick={ () => onDeleteOrder(pedido.id) } title="Eliminar pedido" className="table-pedidos-action button-red">
                                                     <i className="fa fa-close"></i> 
-                                                </button>
-                                                <button onClick={ () => onEditOrder(pedido.id) } title="Editar pedido" className="table-pedidos-action button-blue">
-                                                    <i className="fa fa-pencil"></i> 
-                                                </button>
-                                                <button title="Ver factura" className="table-pedidos-action button-pink">
-                                                    <i className="fas fa-file-alt"></i> 
                                                 </button>
                                             </td>
                                         </tr>
@@ -167,7 +223,6 @@ export const Panel = () => {
                                 <th>Total</th>
                                 <th>Fecha de pedido</th>
                                 <th>Estado</th>
-                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -179,11 +234,6 @@ export const Panel = () => {
                                         <td data-label="Total">$ {pedido.total}</td>
                                         <td data-label="Fecha de pedido">{ pedido.date }</td>
                                         <td data-label="Estado">Completado</td>
-                                        <td data-label="Acciones">
-                                            <button title="Ver factura" className="table-pedidos-action button-pink">
-                                                <i className="fas fa-file-alt"></i> 
-                                            </button>
-                                        </td>
                                     </tr>
                                 ))
                             }

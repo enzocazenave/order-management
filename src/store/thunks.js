@@ -1,10 +1,24 @@
-import { ref, set } from "firebase/database"
+import { ref, set, remove } from "firebase/database";
 import { FirebaseDB } from "../firebase/config"
 
-export const createNewOrder = () => {
+export const createNewOrder = ({ name, qtty, type, price, info }) => {
     return async(dispatch, getState) => {
+        const total = qtty * price;
+        var date;
+        
+        let fecha = new Date();
+        let day = fecha.getDate();
+        let month = fecha.getMonth() + 1;
+        let year = fecha.getFullYear();
+
+        if (month < 10) {
+            date = `${day}/0${month}/${year}`;
+        } else {
+            date = `${day}/${month}/${year}`;
+        }
+
         const data = {
-            name: 'Enzo Cazenave', qtty: 15, total: 1550, date: '24/08/2022', type: 'album', completed: false, client_info: "Numero de telefono: 15-4528-0608"
+            name, qtty, total, date, type, completed: false, client_info: info
         }
 
         const id = new Date().getTime();
@@ -15,3 +29,9 @@ export const createNewOrder = () => {
     }
 }
 
+export const deleteOrder = (id) => {
+    return async(dispatch, getState) => {
+        const reference = ref(FirebaseDB, `orders/${id}`);
+        remove(reference);
+    }
+}
