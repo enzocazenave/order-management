@@ -324,6 +324,11 @@
     magic-string "^0.26.2"
     react-refresh "^0.14.0"
 
+animate.css@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/animate.css/-/animate.css-4.1.1.tgz#614ec5a81131d7e4dc362a58143f7406abd68075"
+  integrity sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ==
+
 ansi-styles@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"
@@ -704,6 +709,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+sweetalert2@^11.4.29:
+  version "11.4.29"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.4.29.tgz#0b42c924dc79eda6580a753e045a5ec7044a0e2e"
+  integrity sha512-UMCZgyEk0m+KizxspB8Bsm5ZQRdguba2t2+Rf0r8XBmq5YqhXq7ItV2C15A3VLfRlxHnEJBTYg6hkSk/x+5Ofw==
 
 to-fast-properties@^2.0.0:
   version "2.0.0"

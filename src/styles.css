@@ -7,6 +7,10 @@
   padding: 0;
 }
 
+body {
+  padding: 25px;
+}
+
 .l-container {
   align-items: center;
   display: flex;
@@ -61,17 +65,6 @@
   text-align: center;
 }
 
-.p-container {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.p-container__pedidos {
-  padding: 25px;
-}
-
 .header-container {
   margin-bottom: 10px;
 }
@@ -93,7 +86,7 @@
   opacity: 0.8;
 }
 
-.button-selected {
+#button-selected {
   background-color: rgba(28, 106, 214, 0.8);
   color: #fff;
   font-weight: 500;
@@ -149,6 +142,10 @@
   background-color: rgba(28, 106, 214, 0.8)
 }
 
+.button-pink {
+  background-color: rgb(236, 85, 175);
+}
+
 .buttons-container {
   margin-top: 50px;
   text-align: center;
@@ -173,4 +170,27 @@
 
 .buttons-container p {
   margin-top: 10px;
+}
+
+.config-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.config-input {
+  border-radius: 5px;
+  border: 2px solid rgb(0,0,0, 0.1); 
+  outline: none;
+  text-align: center;
+  margin: 5px;
+  padding:10px;
+}
+
+.config-input:focus {
+  border-color: rgba(28, 106, 214, 0.8);
+}
+
+.config-container p {
+  font-size: 20px;
 }
