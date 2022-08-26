@@ -198,3 +198,50 @@ body {
 .input-add {
   width: auto;
 }
+
+@media (max-width: 415px) {
+  .l-container__form {
+    width: 90%;
+  }
+
+  .l-container__form-title {
+    font-size: 26px;
+  }
+
+  .header-container-button {
+    font-size: 9px;
+    letter-spacing: 0;
+    margin-right: 5px;
+  }
+
+  .table-pedidos th {
+    font-size: 10px;
+  }
+
+  .table-pedidos td {
+    font-size: 9px;
+  }
+
+  .table-pedidos-action {
+    font-size: 9px;
+    padding: 5px;
+    margin: 0 3px;
+  }
+
+  .config-container {
+    flex-direction: column;
+    margin-top: 30px;
+  }
+
+  .config-container p {
+    font-size: 15px;
+  }
+
+  .config-input {
+    padding: 5px
+  }
+
+  body {
+    padding: 5px;
+  }
+}
